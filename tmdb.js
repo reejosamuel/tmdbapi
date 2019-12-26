@@ -149,7 +149,8 @@ module.exports = class TMDB {
             method: method.method || 'GET',
             url: this._parse(method, params),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'
             },
             body: (method.body ? Object.assign({}, method.body) : {})
         };
@@ -162,6 +163,10 @@ module.exports = class TMDB {
         }
 
         req.body = JSON.stringify(req.body);
+
+        if (req.body == JSON.stringify({})) {
+            req.body = ''
+        }
 
         return got(req.url, req).then(response => JSON.parse(response.body));
     }
